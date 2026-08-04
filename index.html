@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Pas de maximum-scale : un état financier est un tableau dense, et sur un
+      écran de téléphone la première chose qu'un comptable fait est d'agrandir
+      pour vérifier un chiffre. Le lui interdire serait le renvoyer.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SyscoFlow — États Financiers SYSCOHADA</title>
+    <meta name="description" content="Générez automatiquement vos états financiers SYSCOHADA Révisé à partir de votre balance des comptes. Conforme à l'AUDCIF pour les 17 pays OHADA." />
+    <!-- Le SVG sert directement de favicon : il est conçu pour tenir à 16 px. -->
+    <link rel="icon" type="image/svg+xml" href="/syscoflow/logo-syscoflow.svg" />
+    <meta name="theme-color" content="#059669" />
+
+    <!--
+      Aperçu de partage.
+
+      En Afrique de l'Ouest, un lien se transmet par WhatsApp bien avant d'être
+      cliqué depuis un moteur de recherche. Sans ces balises, le lien s'affiche
+      nu, sans titre ni image, et ne donne aucune raison de l'ouvrir.
+
+      og:url et og:image doivent porter une adresse ABSOLUE : les robots de
+      WhatsApp, LinkedIn et Facebook ne résolvent pas toujours un chemin
+      relatif. Remplacer https://syscoflow.example par le domaine réel au
+      moment de la mise en ligne, voir DEPLOIEMENT.md.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SyscoFlow" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content="SyscoFlow — vos états financiers SYSCOHADA depuis votre balance" />
+    <meta property="og:description" content="Déposez votre balance, récupérez le Bilan, le Compte de résultat, le Tableau des flux de trésorerie et les Notes annexes. Conforme au SYSCOHADA Révisé (AUDCIF 2017). Aucune donnée comptable ne quitte votre ordinateur." />
+    <meta property="og:url" content="https://yachjjnr.github.io/syscoflow/" />
+    <meta property="og:image" content="https://yachjjnr.github.io/syscoflow/og-syscoflow.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SyscoFlow, états financiers SYSCOHADA Révisé" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SyscoFlow — vos états financiers SYSCOHADA depuis votre balance" />
+    <meta name="twitter:description" content="Bilan, Compte de résultat, Flux de trésorerie et Notes annexes, générés depuis votre balance. Rien ne quitte votre ordinateur." />
+    <meta name="twitter:image" content="https://yachjjnr.github.io/syscoflow/og-syscoflow.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Fraunces  : sérif variable, chaleureuse mais grave — les titres.
+      Public Sans : sans-sérif du design system fédéral américain, conçue pour
+                    les documents administratifs — le texte courant.
+      IBM Plex Mono : chasse fixe institutionnelle, chiffres tabulaires — les montants.
+    -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+    <script type="module" crossorigin src="/syscoflow/assets/index-B9saU6-m.js"></script>
+    <link rel="stylesheet" crossorigin href="/syscoflow/assets/index-B1ev2wIQ.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+
+</html>
