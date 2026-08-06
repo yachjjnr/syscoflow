@@ -21,7 +21,10 @@ self.__SYSCOFLOW_PRECACHE__ = ["assets/excel-export-Y9Udtuej.js","assets/html2ca
  * Sans eux, « générer un PDF hors ligne » échouerait au premier essai.
  */
 
-const CACHE = 'syscoflow-v1';
+// Le nom porte une version : « activate » supprime tout cache qui ne s'appelle
+// pas ainsi. L'incrémenter est le seul moyen de purger un cache existant chez
+// les visiteurs, ici parce que la version 1 avait archivé une réponse 404.
+const CACHE = 'syscoflow-v2';
 
 /** Racine réelle du site, déduite de l'emplacement de ce fichier. */
 const BASE = new URL('./', self.location).pathname;
@@ -67,16 +70,33 @@ self.addEventListener('fetch', (event) => {
   // licence révoquée resterait valide indéfiniment.
   if (url.pathname.includes('/api/')) return;
 
+  /**
+   * Ne mémorise qu'une réponse valable.
+   *
+   * Sans ce filtre, le worker mettait en cache tout ce qui passait, statut
+   * compris. Sur GitHub Pages, /syscoflow/app renvoie un 404 dont le corps est
+   * l'application : la réponse était donc archivée AVEC son 404, et resservie
+   * telle quelle hors ligne. Plus largement, une panne passagère du serveur se
+   * serait gravée dans le cache et rejouée indéfiniment.
+   */
+  const memoriser = (res) => {
+    if (res && res.ok && res.type === 'basic') {
+      const copie = res.clone();
+      caches.open(CACHE).then((c) => c.put(request, copie));
+    }
+    return res;
+  };
+
   // Navigation : réseau d'abord pour ne pas figer une version, repli sur le
   // cache puis sur la racine, qui porte l'application entière.
+  //
+  // Le repli sur BASE fait tout le travail pour les routes profondes : hors
+  // ligne, /app n'est pas en cache sous son propre nom, et c'est index.html
+  // qui répond. Le routeur prend ensuite la main et affiche la bonne page.
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
-        .then((res) => {
-          const copie = res.clone();
-          caches.open(CACHE).then((c) => c.put(request, copie));
-          return res;
-        })
+        .then(memoriser)
         .catch(() => caches.match(request).then((c) => c || caches.match(BASE))),
     );
     return;
@@ -86,13 +106,7 @@ self.addEventListener('fetch', (event) => {
   // en cache ne peut pas être périmé.
   event.respondWith(
     caches.match(request).then((cache) => {
-      const reseau = fetch(request)
-        .then((res) => {
-          const copie = res.clone();
-          caches.open(CACHE).then((c) => c.put(request, copie));
-          return res;
-        })
-        .catch(() => cache);
+      const reseau = fetch(request).then(memoriser).catch(() => cache);
       return cache || reseau;
     }),
   );
