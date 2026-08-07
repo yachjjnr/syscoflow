@@ -9,6 +9,62 @@
       pour vérifier un chiffre. Le lui interdire serait le renvoyer.
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--
+      Politique de sécurité de contenu.
+      =================================
+
+      Ce n'est pas une mesure de sécurité parmi d'autres, c'est LA preuve que
+      SyscoFlow n'envoie rien.
+
+      Le premier comptable à avoir essayé l'outil a demandé : « quelle
+      assurance que les balances ne seront pas capturées ? ». On peut lui
+      répondre trois choses, de la plus faible à la plus forte.
+
+      Que l'application fonctionne sans réseau : cela montre qu'elle n'a besoin
+      de rien, mais un programme peut très bien fonctionner hors ligne ET
+      transmettre dès qu'il trouve une connexion.
+
+      Qu'aucune requête ne part, réseau actif, ce qui se vérifie dans l'onglet
+      Réseau du navigateur : c'est déjà une observation directe, mais elle
+      porte sur un moment donné.
+
+      Et enfin ceci, qui est d'une autre nature : « connect-src 'self' »
+      ordonne au NAVIGATEUR de refuser toute connexion sortante vers un autre
+      domaine. Ce n'est plus une promesse de l'auteur, c'est une interdiction
+      que le navigateur applique, y compris contre l'auteur. Si une version
+      future tentait d'envoyer une balance, la requête serait bloquée et
+      l'utilisateur verrait l'erreur.
+
+      Cette règle est lisible par n'importe qui, dans le code source de la
+      page, sans savoir programmer.
+
+      Détail des directives :
+        default-src 'self'      rien ne vient d'ailleurs que de ce site
+        connect-src 'self'      aucune requête sortante hors de ce site
+        form-action 'none'      aucun formulaire ne peut soumettre où que ce soit
+        object-src 'none'       ni greffon ni contenu embarqué
+        base-uri 'self'         l'origine des chemins ne peut être détournée
+        frame-ancestors 'none'  la page ne peut pas être encadrée par un tiers
+
+      'unsafe-inline' sur les styles est nécessaire : React et Tailwind posent
+      des styles en ligne. Cela ne concerne pas l'envoi de données.
+      blob: sert aux PDF et classeurs produits localement, qui sont créés en
+      mémoire dans le navigateur et n'ont pas d'adresse sur le réseau.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      connect-src 'self';
+      script-src 'self';
+      style-src 'self' 'unsafe-inline';
+      img-src 'self' data: blob:;
+      font-src 'self';
+      object-src 'none';
+      base-uri 'self';
+      form-action 'none';
+      frame-ancestors 'none';
+    " />
+
     <title>SyscoFlow — États Financiers SYSCOHADA</title>
     <meta name="description" content="Générez automatiquement vos états financiers SYSCOHADA Révisé à partir de votre balance des comptes. Conforme à l'AUDCIF pour les 17 pays OHADA." />
     <!-- Le SVG sert directement de favicon : il est conçu pour tenir à 16 px. -->
@@ -69,7 +125,7 @@
       sans réseau. La vitesse enfin, un aller-retour vers un domaine tiers en
       moins là où chaque aller-retour se paie.
     -->
-    <script type="module" crossorigin src="/syscoflow/assets/index-CGmiDnIU.js"></script>
+    <script type="module" crossorigin src="/syscoflow/assets/index-MKBF-_Fj.js"></script>
     <link rel="stylesheet" crossorigin href="/syscoflow/assets/index-CUi_OMMa.css">
   </head>
 
